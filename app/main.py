@@ -10,7 +10,7 @@ def hello_world():
 
 @app.route('/api/pdf', methods=['POST'])
 def upload_pdf():
-    return 'Welcome to Etron API!'
+    return '{"email": "megatunger@gmail.com","missing_fields": [{"field": "name","question": "Tên của bạn là gì?"}]}'
 
 
 @app.route('/api/question', methods=['POST'])
