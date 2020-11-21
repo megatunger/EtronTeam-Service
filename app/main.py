@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 
 app = Flask(__name__)
 
@@ -10,7 +10,8 @@ def hello_world():
 
 @app.route('/api/pdf', methods=['POST'])
 def upload_pdf():
-    return '{"email": "megatunger@gmail.com","missing_fields": [{"field": "name","question": "Tên của bạn là gì?"}]}'
+    return jsonify(
+        {"email": "megatunger@gmail.com", "missing_fields": [{"field": "name", "question": "Tên của bạn là gì?"}]})
 
 
 @app.route('/api/question', methods=['POST'])
