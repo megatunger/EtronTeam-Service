@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
-from pdf_extractor import pdf2tructure
-from question_list import select_question
+from app.pdf_extractor import pdf2tructure
+from app.question_list import select_question
 
 app = Flask(__name__)
 
@@ -12,7 +12,7 @@ def hello_world():
 
 @app.route('/api/pdf', methods=['POST', 'GET'])
 def upload_pdf():
-    struct_info = pdf2tructure("Profile.pdf")
+    struct_info = pdf2tructure("app/Profile.pdf")
     name = struct_info["name"].split()[0]
     email = struct_info["email"]
     missing_fields = []

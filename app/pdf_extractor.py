@@ -1,8 +1,6 @@
 import re 
 from io import StringIO
 
-import PyPDF2
-
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from pdfminer.pdfdocument import PDFDocument
