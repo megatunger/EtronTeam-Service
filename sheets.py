@@ -7,9 +7,56 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import numpy as np
 SERVICE_ACCOUNT_FILE = 'etron-1605966088835-a6ee18c2b12a.json'
-NUM_FIELDS = 18
+NUM_FIELDS = 19
 from flask import Flask, request
-app = Flask(__name__) 
+app = Flask(__name__)
+
+def select_question(field):
+    questions = {
+        "name": "Tên của bạn là gì?",
+        "phone": "Số điện thoại của bạn là gì nhỉ?",
+        "address": "Địa chỉ nhà bạn ở đâu?",
+        "gender": "Bạn là nam hay nữ?",
+        "age": "Năm nay bạn bao nhiêu tuổi?",
+        "skills": "Những kỹ năng bạn có là gì?",
+        "ot": "Bạn có sẵn sàng làm việc sau giờ làm không?",
+        "salary_expectation": "Mức lương mong muốn của bạn là bao nhiêu?"
+    }
+    if field not in questions:
+        return ""
+    return questions[field]
+
+id_mail = {
+    "wwwlinkedincom/in/chiphuyen": 1,
+    "diephang97@gmailcom": 2,
+    "wwwlinkedincom/in/bangdo172": 3,
+    "tuyenhuy026@gmailcom": 4
+}
+
+def select_column(field):
+    columns = {
+        "name": "B",
+        "email": "C",
+        "phone": "D",
+        "address": "E",
+        "gender": "F",
+        "education_level": "G",
+        "major": "H",
+        "university": "I",
+        "age": "J",
+        "skills": "K",
+        "job1": "L",
+        "job2": "M",
+        "job3": "N",
+        "satisfaction": "O",
+        "ot": "P",
+        "salary_expectation": "Q",
+        "languages": "R",
+        "churn_prediction": "S"
+    }
+    if field not in columns:
+        return ""
+    return columns[field]
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
@@ -33,6 +80,19 @@ def export_googlesheet(data ,range_, sheet_id = SPREADSHEET_ID):
     valueInputOption="RAW", body=body).execute()
     print(result)
 
+def write_box(text, user_id, field):
+    service = build('sheets', 'v4', credentials=creds)
+    data = [[text]]
+    body = {
+        'values': data
+    }
+    col = select_column(field)
+    cow = user_id + 1
+    range_ = 'interview!{}{}:{}{}'.format(col, cow, col, cow)
+    print(range)
+    result = service.spreadsheets().values().update(
+    spreadsheetId=SPREADSHEET_ID, range=range_,
+    valueInputOption="RAW", body=body).execute()
 
 @app.route('/cv', methods = ['POST']) 
 def export_from_cv():
@@ -43,18 +103,21 @@ def export_from_cv():
     data[0] = user_id
     for rq in request.json['cv']:
         data[rq['id'] + 1] = rq['text']
-    range_ = 'interview!A{}:R{}'.format(user_id + 1, user_id + 1)
+    range_ = 'interview!A{}:S{}'.format(user_id + 1, user_id + 1)
     export_googlesheet(data=data, range_ = range_)
-    return 'a'
+    return {'status': 200}
 
 @app.route('/missing_field', methods= ['GET'])
 def read_missing_fields():
     user_id = int(request.args.get('user_id'))
-    range_ = 'interview!A{}:R{}'.format(user_id +1, user_id +1)
+    range_ = 'interview!A{}:S{}'.format(user_id +1, user_id +1)
     service = build('sheets', 'v4', credentials=creds)
     sheet = service.spreadsheets()
     result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=range_).execute()
     values = result.get('values', [])
+    print(values)
+    json_res = {}
+    json_res['email'] = ''
     print(values)
     return 'a'
 
