@@ -8,7 +8,8 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
-SERVICE_ACCOUNT_FILE = 'etron-1605966088835-a6ee18c2b12a.json'
+SERVICE_ACCOUNT_FILE = 'app/etron-1605966088835-a6ee18c2b12a.json'
+# SERVICE_ACCOUNT_FILE = 'etron-1605966088835-a6ee18c2b12a.json'
 NUM_FIELDS = 18
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
@@ -31,10 +32,19 @@ def export_googlesheet(data ,range_, sheet_id = SPREADSHEET_ID):
     print(result)
 
 def output_export(user_id, data):
-    # data = ['-']*NUM_FIELDS
-    data = [user_id] + data
+    list_keys = ["name", "email", "phone", "address", "gender", "education_level", "major", "university", "age", "skills", 
+                "job1", "job2", "job3", "satisfaction", "ot", "salary_expectation", "churn_prediction"]
+    format_data = [user_id]
+    for key in list_keys:
+        format_data.append(data[key])
     range_ = 'interview!A{}:R{}'.format(user_id + 1, user_id + 1)
-    export_googlesheet(data=data, range_ = range_)
+    export_googlesheet(data=format_data, range_ = range_)
 
 if __name__ == "__main__":
-    output_export()
+    data = ['-' for _ in range(NUM_FIELDS - 1)]
+    data = {}
+    list_keys = ["name", "email", "phone", "address", "gender", "education_level", "major", "university", "age", "skills", 
+                "job1", "job2", "job3", "satisfaction", "ot", "salary_expectation", "churn_prediction"]
+    for key in list_keys:
+        data[key] = "-"
+    output_export(1, data)
