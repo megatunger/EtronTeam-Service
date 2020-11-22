@@ -12,7 +12,7 @@ def hello_world():
 
 @app.route('/api/pdf', methods=['POST', 'GET'])
 def upload_pdf():
-    struct_info = pdf2tructure("app/Profile.pdf")
+    struct_info = pdf2tructure("app/profile_huyenchip.pdf")
     name = struct_info["name"].split()[0]
     email = struct_info["email"]
     missing_fields = []
