@@ -16,10 +16,10 @@ def hello_world():
 
 @app.route('/api/pdf', methods=['POST', 'GET'])
 def upload_pdf():
-    uploaded_files = request.files.getlist("file")
-    filename = 'tmp/' + str(uuid.uuid4()) + '.pdf'
-    # filename = 'app/profile_bangdo.pdf'
-    uploaded_files[0].save(filename)
+    # uploaded_files = request.files.getlist("file")
+    # filename = 'tmp/' + str(uuid.uuid4()) + '.pdf'
+    filename = 'app/profile_bangdo.pdf'
+    # uploaded_files[0].save(filename)
     struct_info = pdf2tructure(filename)
     name = struct_info["name"].split()[0]
     email = struct_info["email"]

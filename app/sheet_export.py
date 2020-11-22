@@ -36,7 +36,7 @@ def output_export(user_id, data):
     format_data = [user_id]
     for key in list_keys:
         format_data.append(data[key])
-    range_ = 'interview!A{}:R{}'.format(user_id + 1, user_id + 1)
+    range_ = 'interview!A{}:S{}'.format(user_id + 1, user_id + 1)
     export_googlesheet(data=format_data, range_ = range_)
 
 if __name__ == "__main__":
