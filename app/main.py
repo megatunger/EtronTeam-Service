@@ -1,7 +1,10 @@
 import uuid
+import json 
+
 from flask import Flask, jsonify, request
 from app.pdf_extractor import pdf2tructure
 from app.question_list import select_question
+from app.sheet_export import output_export
 
 app = Flask(__name__)
 
@@ -30,6 +33,14 @@ def upload_pdf():
                 "field": field,
                 "question": question.format(name)
             })
+    
+    user_map_id = json.load(open("app/mail_id.json"))
+    if email not in user_map_id:
+        user_id = len(user_map_id) + 2
+    else:
+        user_id = user_map_id[email]
+    
+    output_export(user_id, list(struct_info.values()))
     return jsonify(
         {"email": email, "missing_fields": missing_fields})
 
