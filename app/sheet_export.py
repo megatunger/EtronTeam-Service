@@ -31,10 +31,19 @@ def export_googlesheet(data ,range_, sheet_id = SPREADSHEET_ID):
     print(result)
 
 def output_export(user_id, data):
-    # data = ['-']*NUM_FIELDS
-    data = [user_id] + data
+    list_keys = ["name", "email", "phone", "address", "gender", "education_level", "major", "university", "age", "skills", 
+                "job1", "job2", "job3", "satisfaction", "ot", "salary_expectation", "churn_prediction"]
+    format_data = [user_id]
+    for key in list_keys:
+        format_data.append(data[key])
     range_ = 'interview!A{}:R{}'.format(user_id + 1, user_id + 1)
-    export_googlesheet(data=data, range_ = range_)
+    export_googlesheet(data=format_data, range_ = range_)
 
 if __name__ == "__main__":
-    output_export()
+    data = ['-' for _ in range(NUM_FIELDS - 1)]
+    data = {}
+    list_keys = ["name", "email", "phone", "address", "gender", "education_level", "major", "university", "age", "skills", 
+                "job1", "job2", "job3", "satisfaction", "ot", "salary_expectation", "churn_prediction"]
+    for key in list_keys:
+        data[key] = "-"
+    output_export(1, data)

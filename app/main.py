@@ -18,6 +18,7 @@ def hello_world():
 def upload_pdf():
     uploaded_files = request.files.getlist("file")
     filename = 'tmp/' + str(uuid.uuid4()) + '.pdf'
+    # filename = 'app/profile_bangdo.pdf'
     uploaded_files[0].save(filename)
     struct_info = pdf2tructure(filename)
     name = struct_info["name"].split()[0]
@@ -39,8 +40,8 @@ def upload_pdf():
         user_id = len(user_map_id) + 2
     else:
         user_id = user_map_id[email]
-    
-    output_export(user_id, list(struct_info.values()))
+    # print(struct_info)
+    output_export(user_id, struct_info)
     return jsonify(
         {"email": email, "missing_fields": missing_fields})
 
