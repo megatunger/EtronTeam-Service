@@ -1,4 +1,5 @@
-from flask import Flask, jsonify
+import uuid
+from flask import Flask, jsonify, request
 from app.pdf_extractor import pdf2tructure
 from app.question_list import select_question
 
@@ -12,7 +13,10 @@ def hello_world():
 
 @app.route('/api/pdf', methods=['POST', 'GET'])
 def upload_pdf():
-    struct_info = pdf2tructure("app/Profile.pdf")
+    uploaded_files = request.files.getlist("file")
+    filename = 'tmp/' + str(uuid.uuid4()) + '.pdf'
+    uploaded_files[0].save(filename)
+    struct_info = pdf2tructure(filename)
     name = struct_info["name"].split()[0]
     email = struct_info["email"]
     missing_fields = []
