@@ -8,7 +8,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
-SERVICE_ACCOUNT_FILE = 'etron-1605966088835-a6ee18c2b12a.json'
+SERVICE_ACCOUNT_FILE = 'app/etron-1605966088835-a6ee18c2b12a.json'
 NUM_FIELDS = 18
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
