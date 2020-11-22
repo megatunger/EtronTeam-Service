@@ -7,3 +7,5 @@ MarkupSafe==1.1.1
 pdfminer==20191125
 pycryptodome==3.9.9
 Werkzeug==1.0.1
+google_auth_oauthlib
+google-api-python-client
