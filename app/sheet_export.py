@@ -32,7 +32,7 @@ def export_googlesheet(data ,range_, sheet_id = SPREADSHEET_ID):
 
 def output_export(user_id, data):
     list_keys = ["name", "email", "phone", "address", "gender", "education_level", "major", "university", "age", "skills", 
-                "job1", "job2", "job3", "satisfaction", "ot", "salary_expectation", "churn_prediction"]
+                "job1", "job2", "job3", "satisfaction", "ot", "salary_expectation", "languages", "churn_prediction"]
     format_data = [user_id]
     for key in list_keys:
         format_data.append(data[key])
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     data = ['-' for _ in range(NUM_FIELDS - 1)]
     data = {}
     list_keys = ["name", "email", "phone", "address", "gender", "education_level", "major", "university", "age", "skills", 
-                "job1", "job2", "job3", "satisfaction", "ot", "salary_expectation", "churn_prediction"]
+                "job1", "job2", "job3", "satisfaction", "ot", "salary_expectation", "languages", "churn_prediction"]
     for key in list_keys:
         data[key] = "-"
     output_export(1, data)
