@@ -47,8 +47,8 @@ def count_year(string):
 def pdf2json(file_path="Profile.pdf"):
     text = convert_pdf_to_string(file_path)
     text = text.replace('.','')
-    text = text.replace('\x0c','').replace('\xa0', '')
-    list_contents = text.split('\n\n\n\n')
+    text = text.replace('\x0c','').replace('\xa0', '')#.replace('\n\n\n\n', '\n')
+    list_contents = text.split('\n\n')
     table_of_contents_raw = [content.split('\n') for content in list_contents]
 
     struct_info = {
@@ -67,6 +67,13 @@ def pdf2json(file_path="Profile.pdf"):
     for table_idx, table in enumerate(table_of_contents_raw):
         if table == []:
             continue
+        if len(table) == 1:
+            if table[0] not in list_content:
+                if struct_info["Name"] == [] and table[0] != "":
+                    struct_info["Name"] = table
+                    old_idx = -1
+                else:
+                    continue
         
         start_idx = -1
         for unit in table:
@@ -76,8 +83,6 @@ def pdf2json(file_path="Profile.pdf"):
             if start_idx == -1:
                 if old_idx == -1:
                     continue
-                elif table_idx == 2:
-                    start_idx = 0
                 else:
                     start_idx = old_idx
             if unit == "":
@@ -85,6 +90,8 @@ def pdf2json(file_path="Profile.pdf"):
             parttern = re.match(r"^Page \d+ of \d+", unit)
             if parttern is not None:
                 continue
+            # if struct_info["Name"] != [] and unit == struct_info["Name"][0]:
+            #     break
             key = list_content[start_idx]
             struct_info[key].append(unit)
 
@@ -109,7 +116,7 @@ def pdf2json(file_path="Profile.pdf"):
     num_mounth = int(sum(list_times[1:]) / len(list_times[1:]))
     num_year = int(num_mounth / 12)
     num_mounth = int(num_mounth % 12)
-    struct_info["Churn Predict"] = f"{num_year} years {num_mounth} mounths"
+    struct_info["Churn Predict"] = f"{num_year} years {num_mounth} months"
 
     for _ in range(max(0, 3 - len(experiment))):
         experiment.append("")
@@ -172,7 +179,9 @@ def pdf2tructure(file_path):
     
 
 if __name__ == "__main__":
-    struct_info = pdf2tructure("Profile.pdf")
+    list_profile = ["profile_huyenchip.pdf", "profile_diephang.pdf", "profile_bangdo.pdf", "profile_tuyenhuy.pdf"]
+    struct_info = pdf2json(list_profile[3])
+    # struct_info = pdf2tructure(list_profile[2])
     for key in struct_info:
         print(key)
         print(struct_info[key])
