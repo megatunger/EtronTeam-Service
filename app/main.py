@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
-from pdf_extractor import pdf2tructure
-from question_list import select_question
+from app.pdf_extractor import pdf2tructure
+from app.question_list import select_question
 
 app = Flask(__name__)
 
